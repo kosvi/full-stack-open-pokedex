@@ -8,6 +8,7 @@ on:
     branches: [master]
     types: [opened, synchronize]
 
+
 jobs:
   test:
     runs-on: ubuntu-18.04
@@ -33,6 +34,23 @@ jobs:
          command: npm run test:e2e
          start: npm run start-prod
          wait-on: http://localhost:5000
+     - name: telegram failure
+       uses: appleboy/telegram-action@2efd23283ae25229a0b4d315d5d33f73b346ef99
+       with:
+         to: ${{ secrets.TELEGRAM_TO_ME }}
+         token: ${{ secrets.TELEGRAM_TOKEN }}
+         message: |
+           ${{ github.actor }} created ${{ github.event_name }}
+
+           PR message: ${{ github.event.pull_request.title }}
+           OR (if could be added?)
+           Commit message: ${{ github.event.head_commit.message }}
+
+           Repository: ${{ github.repository }}
+
+           See changes: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+       if: failure()
+
 # Only bump version on pull to master
   tag:
    if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip') }}
@@ -62,3 +80,13 @@ jobs:
           healthcheck: "https://quiet-shore-77013.herokuapp.com/version"
           checkstring: "5"
           rollbackonhealthcheckfailed: true
+      - name: 
+        uses: appleboy/telegram-action@2efd23283ae25229a0b4d315d5d33f73b346ef99
+        with: 
+          to: ${{ secrets.TELEGRAM_TO_ME }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            New version successfully deployed
+
+            Repository: ${{ github.repository }}
+        if: success()
