@@ -13,7 +13,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: send telegram
-        uses: appleboy/telegram-action@master
+        uses: appleboy/telegram-action@2efd23283ae25229a0b4d315d5d33f73b346ef99
         with: 
-          to: ${{ secrets.TELEGRAM_TO }}
+          to: ${{ secrets.TELEGRAM_TO_ME }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
