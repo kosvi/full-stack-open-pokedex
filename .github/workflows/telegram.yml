@@ -1,0 +1,16 @@
+name: Telegram test
+
+on:
+  push: 
+    branches:
+      - telegram
+
+jobs:
+  tele:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: send telegram
+        uses: appleboy/telegram-action@master
+        with: 
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
