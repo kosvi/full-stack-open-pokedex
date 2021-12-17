@@ -4,6 +4,7 @@ on:
   schedule: 
     - cron: '20 11 * * *'
 
+
 jobs:
   health_check:
     runs-on: ubuntu-18.04
