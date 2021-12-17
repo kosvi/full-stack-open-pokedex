@@ -12,8 +12,17 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      - name: install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: npm install
+        run: npm install
+      - name: lint
+        run: npm run eslint
       - name: send telegram
         uses: appleboy/telegram-action@2efd23283ae25229a0b4d315d5d33f73b346ef99
         with: 
           to: ${{ secrets.TELEGRAM_TO_ME }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
+        if: failure()
